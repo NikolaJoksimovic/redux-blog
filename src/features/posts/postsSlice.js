@@ -16,8 +16,13 @@ const initialState = [
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {}, // ovde push cuva prvobitni redosled jer koristi immet :)
+  reducers: {
+    addPost(state, action) {
+      state.push(action.payload);
+    },
+  }, // ovde push cuva prvobitni redosled jer koristi immet :)
 });
 
 export const selectAllPosts = (state) => state.posts; //Da li ovo treba da bude ovde...?
+export const { addPost } = postsSlice.actions;
 export default postsSlice.reducer;
