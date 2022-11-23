@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import { addPost } from "./postsSlice";
 
 const AddPostForm = () => {
-  const [input, setInput] = useState({ postTitle: "", postContent: "" });
   const dispatch = useDispatch();
+  const [input, setInput] = useState({
+    postTitle: "",
+    postContent: "",
+    userId: "",
+  });
 
   const handleChange = (e) => {
     const name = e.target.name;
@@ -13,26 +16,26 @@ const AddPostForm = () => {
     setInput({ ...input, [name]: value });
   };
 
-  // console.log(input.postTitle, input.postContent);
-  const handleSubmit = () => {
+  const handleClick = () => {
     const title = input.postTitle;
     const content = input.postContent;
     if (title && content) {
-      dispatch(
-        addPost({
-          id: nanoid(),
-          title,
-          content,
-        })
-      );
+      dispatch(addPost(title, content));
       setInput({ postTitle: "", postContent: "" });
     }
   };
-  // console.log(input);
   return (
-    <section>
+    <section id='form-section'>
       <h2>Add a New Post</h2>
       <form action=''>
+        <label htmlFor='author'>Author: </label>
+        <input
+          type='text'
+          id='author'
+          name='author'
+          value={input.userId}
+          onChange={handleChange}
+        />
         <label htmlFor='postTitle'>Post Title: </label>
         <input
           type='text'
@@ -50,7 +53,7 @@ const AddPostForm = () => {
           value={input.postContent}
           onChange={handleChange}
         ></textarea>
-        <button type='button' onClick={handleSubmit}>
+        <button type='button' onClick={handleClick}>
           Save Post
         </button>
       </form>
