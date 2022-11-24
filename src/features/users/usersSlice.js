@@ -11,5 +11,5 @@ const usersSlice = createSlice({
   reducers: {},
 });
 
-export const selectAllUsers = (state) => state.usersSlice;
+export const selectAllUsers = (state) => state.users; //I dalje mislim da ovo ne treba ovde da se resava..
 export default usersSlice.reducer;

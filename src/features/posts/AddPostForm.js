@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selectAllUsers } from "../users/usersSlice";
 import { addPost } from "./postsSlice";
 
 const AddPostForm = () => {
@@ -9,10 +10,12 @@ const AddPostForm = () => {
     postContent: "",
     userId: "",
   });
+  const users = useSelector(selectAllUsers);
 
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+    console.log(name, value);
     setInput({ ...input, [name]: value });
   };
 
@@ -21,21 +24,35 @@ const AddPostForm = () => {
     const content = input.postContent;
     if (title && content) {
       dispatch(addPost(title, content));
-      setInput({ postTitle: "", postContent: "" });
+      setInput({ postTitle: "", postContent: "", userId: "" });
     }
   };
+  const usersOptions = users?.map((user) => (
+    <option key={user.id} value={user.id}>
+      {user.name}
+    </option>
+  ));
+
+  const canSave =
+    Boolean(input.postTitle) &&
+    Boolean(input.postContent) &&
+    Boolean(input.userId);
+
   return (
     <section id='form-section'>
       <h2>Add a New Post</h2>
       <form action=''>
-        <label htmlFor='author'>Author: </label>
-        <input
+        <label htmlFor='userId'>Author: </label>
+        <select
           type='text'
-          id='author'
-          name='author'
+          id='userId'
+          name='userId'
           value={input.userId}
           onChange={handleChange}
-        />
+        >
+          <option value=''></option>
+          {usersOptions}
+        </select>
         <label htmlFor='postTitle'>Post Title: </label>
         <input
           type='text'
@@ -53,7 +70,7 @@ const AddPostForm = () => {
           value={input.postContent}
           onChange={handleChange}
         ></textarea>
-        <button type='button' onClick={handleClick}>
+        <button type='button' disabled={!canSave} onClick={handleClick}>
           Save Post
         </button>
       </form>
