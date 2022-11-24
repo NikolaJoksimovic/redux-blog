@@ -15,15 +15,15 @@ const AddPostForm = () => {
   const handleChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    console.log(name, value);
     setInput({ ...input, [name]: value });
   };
 
   const handleClick = () => {
     const title = input.postTitle;
     const content = input.postContent;
+    const userId = input.userId;
     if (title && content) {
-      dispatch(addPost(title, content));
+      dispatch(addPost(title, content, userId));
       setInput({ postTitle: "", postContent: "", userId: "" });
     }
   };
